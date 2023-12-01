@@ -27,3 +27,24 @@ example   fastest       │ slowest       │ median        │ mean          �
 example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
 ├─ part1  72.91 µs      │ 146.3 µs      │ 73.99 µs      │ 75.6 µs       │ 100     │ 100
 ╰─ part2  893.2 µs      │ 991.1 µs      │ 903.2 µs      │ 910.7 µs      │ 100     │ 100
+
+optimised part2 with substring check, strangely when implemented to part1 mean speed became 3x
+---
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  250.3 µs      │ 277.6 µs      │ 253.2 µs      │ 255.6 µs      │ 100     │ 100
+╰─ part2  472.1 µs      │ 562.9 µs      │ 481.1 µs      │ 483.1 µs      │ 100     │ 100
+
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  250.7 µs      │ 449 µs        │ 256.6 µs      │ 274 µs        │ 100     │ 100
+╰─ part2  476.1 µs      │ 593.9 µs      │ 486.8 µs      │ 492.4 µs      │ 100     │ 100
+
+optimised part2 and un-optimised part 1
+---
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  73.82 µs      │ 89.46 µs      │ 75.84 µs      │ 76.41 µs      │ 100     │ 100
+╰─ part2  420.3 µs      │ 463.9 µs      │ 425.5 µs      │ 427.5 µs      │ 100     │ 100
+
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  74.31 µs      │ 89.6 µs       │ 76.4 µs       │ 76.69 µs      │ 100     │ 100
+╰─ part2  417.9 µs      │ 449.7 µs      │ 421.9 µs      │ 424.5 µs      │ 100     │ 100
+
