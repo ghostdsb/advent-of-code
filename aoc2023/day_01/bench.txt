@@ -1,0 +1,54 @@
+hashmap create|write|read
+---  
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  72.35 µs      │ 96.93 µs      │ 73.89 µs      │ 76.49 µs      │ 100     │ 100
+╰─ part2  1.702 ms      │ 2.208 ms      │ 1.741 ms      │ 1.805 ms      │ 100     │ 100
+
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  72.63 µs      │ 89.53 µs      │ 74.03 µs      │ 75.76 µs      │ 100     │ 100
+╰─ part2  1.7 ms        │ 2.069 ms      │ 1.729 ms      │ 1.745 ms      │ 100     │ 100
+
+hashmap create|write no read
+---
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  74.24 µs      │ 236.7 µs      │ 173.9 µs      │ 181.1 µs      │ 100     │ 100
+╰─ part2  1.488 ms      │ 2.019 ms      │ 1.502 ms      │ 1.545 ms      │ 100     │ 100
+
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  160.3 µs      │ 214.5 µs      │ 163.1 µs      │ 173.1 µs      │ 100     │ 100
+╰─ part2  1.491 ms      │ 2.958 ms      │ 1.502 ms      │ 1.518 ms      │ 100     │ 100
+
+without hashmap
+--- 
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  73.96 µs      │ 114.8 µs      │ 75.91 µs      │ 77.56 µs      │ 100     │ 100
+╰─ part2  905.7 µs      │ 1.299 ms      │ 952.9 µs      │ 986.9 µs      │ 100     │ 100
+
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  72.91 µs      │ 146.3 µs      │ 73.99 µs      │ 75.6 µs       │ 100     │ 100
+╰─ part2  893.2 µs      │ 991.1 µs      │ 903.2 µs      │ 910.7 µs      │ 100     │ 100
+
+optimised part2 with substring check, strangely when implemented to part1 mean speed became 3x
+---
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  250.3 µs      │ 277.6 µs      │ 253.2 µs      │ 255.6 µs      │ 100     │ 100
+╰─ part2  472.1 µs      │ 562.9 µs      │ 481.1 µs      │ 483.1 µs      │ 100     │ 100
+
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  250.7 µs      │ 449 µs        │ 256.6 µs      │ 274 µs        │ 100     │ 100
+╰─ part2  476.1 µs      │ 593.9 µs      │ 486.8 µs      │ 492.4 µs      │ 100     │ 100
+
+optimised part2 and un-optimised part 1
+---
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  73.82 µs      │ 89.46 µs      │ 75.84 µs      │ 76.41 µs      │ 100     │ 100
+╰─ part2  420.3 µs      │ 463.9 µs      │ 425.5 µs      │ 427.5 µs      │ 100     │ 100
+
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  74.31 µs      │ 89.6 µs       │ 76.4 µs       │ 76.69 µs      │ 100     │ 100
+╰─ part2  417.9 µs      │ 449.7 µs      │ 421.9 µs      │ 424.5 µs      │ 100     │ 100
+
+example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  74.17 µs      │ 171.3 µs      │ 75.49 µs      │ 77.63 µs      │ 100     │ 100
+╰─ part2  417.9 µs      │ 462.9 µs      │ 422.7 µs      │ 426 µs        │ 100     │ 100
+

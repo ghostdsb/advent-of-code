@@ -1,0 +1,9 @@
+/home/ghostdsb/Documents/advent-of-code/aoc2023/day-02/target/debug/deps/linux_raw_sys-317918e60a0b234e.rmeta: /home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/lib.rs /home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/elf.rs /home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/x86_64/errno.rs /home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/x86_64/general.rs /home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/x86_64/ioctl.rs
+
+/home/ghostdsb/Documents/advent-of-code/aoc2023/day-02/target/debug/deps/linux_raw_sys-317918e60a0b234e.d: /home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/lib.rs /home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/elf.rs /home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/x86_64/errno.rs /home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/x86_64/general.rs /home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/x86_64/ioctl.rs
+
+/home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/lib.rs:
+/home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/elf.rs:
+/home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/x86_64/errno.rs:
+/home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/x86_64/general.rs:
+/home/ghostdsb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/linux-raw-sys-0.4.12/src/x86_64/ioctl.rs:
