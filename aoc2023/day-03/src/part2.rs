@@ -1,17 +1,3 @@
-/*
-nums_vec = []
-
-in current run
-is_valid: false,
-char -> check neighbours;
-    if symbol -> is_valid: true
-    if next symbol None | dot -> end run
-
-on run end:
-    if is_valid : push to nums_vec
-    start next run
-*/
-
 #[derive(Debug, Copy, Clone)]
 struct Run {
     is_valid: bool,
@@ -45,7 +31,16 @@ pub fn process(input: &str) -> String {
     let mut runs: Vec<Run> = vec![];
     let mut grid: Vec<Vec<char>> = vec![];
     let height = input.lines().count();
-
+    let directions = [
+        (-1, 0),
+        (0, -1),
+        (1, 0),
+        (0, 1),
+        (1, 1),
+        (1, -1),
+        (-1, 1),
+        (-1, -1),
+    ];
     for i in 0..height {
         let line: Vec<char> = input.lines().nth(i).unwrap().chars().collect();
         grid.push(line);
@@ -57,80 +52,20 @@ pub fn process(input: &str) -> String {
                 // dbg!(c);
                 run.move_forward(*c);
                 // dbg!(run);
-                //west
-                if check_stuff(&grid, j as i32, i as i32 - 1) {
-                    if grid[j][i - 1] != '.' && !grid[j][i - 1].is_ascii_digit() {
-                        run.make_valid();
-                        if grid[j][i - 1] == '*' {
-                            run.set_gear_position(j, i - 1);
+                directions.iter().for_each(|(dy, dx)| {
+                    let x = i as i32 + dx;
+                    let y = j as i32 + dy;
+                    if is_valid_neighbour_coordinate(&grid, y, x) {
+                        let x = x as usize;
+                        let y = y as usize;
+                        if grid[y][x] != '.' && !grid[y][x].is_ascii_digit() {
+                            run.make_valid();
+                            if grid[y][x] == '*' {
+                                run.set_gear_position(y, x);
+                            }
                         }
                     }
-                }
-                //east
-                if check_stuff(&grid, j as i32, i as i32 + 1) {
-                    if grid[j][i + 1] != '.' && !grid[j][i + 1].is_ascii_digit() {
-                        run.make_valid();
-                        if grid[j][i + 1] == '*' {
-                            run.set_gear_position(j, i + 1);
-                        }
-                    }
-                }
-                //north
-                if check_stuff(&grid, j as i32 - 1, i as i32) {
-                    // dbg!(grid[j-1][i]);
-                    if grid[j - 1][i] != '.' && !grid[j - 1][i].is_ascii_digit() {
-                        run.make_valid();
-                        if grid[j - 1][i] == '*' {
-                            run.set_gear_position(j - 1, i);
-                        }
-                    }
-                }
-                //south
-                if check_stuff(&grid, j as i32 + 1, i as i32) {
-                    // dbg!(grid[j+1][i]);
-                    if grid[j + 1][i] != '.' && !grid[j + 1][i].is_ascii_digit() {
-                        run.make_valid();
-                        if grid[j + 1][i] == '*' {
-                            run.set_gear_position(j + 1, i);
-                        }
-                    }
-                }
-                // south-west
-                if check_stuff(&grid, j as i32 + 1, i as i32 + 1) {
-                    if grid[j + 1][i + 1] != '.' && !grid[j + 1][i + 1].is_ascii_digit() {
-                        run.make_valid();
-                        if grid[j + 1][i + 1] == '*' {
-                            run.set_gear_position(j + 1, i + 1);
-                        }
-                    }
-                }
-                // north-east
-                if check_stuff(&grid, j as i32 - 1, i as i32 - 1) {
-                    if grid[j - 1][i - 1] != '.' && !grid[j - 1][i - 1].is_ascii_digit() {
-                        run.make_valid();
-                        if grid[j - 1][i - 1] == '*' {
-                            run.set_gear_position(j - 1, i - 1);
-                        }
-                    }
-                }
-                // north-west
-                if check_stuff(&grid, j as i32 - 1, i as i32 + 1) {
-                    if grid[j - 1][i + 1] != '.' && !grid[j - 1][i + 1].is_ascii_digit() {
-                        run.make_valid();
-                        if grid[j - 1][i + 1] == '*' {
-                            run.set_gear_position(j - 1, i + 1);
-                        }
-                    }
-                }
-                // south-east
-                if check_stuff(&grid, j as i32 + 1, i as i32 - 1) {
-                    if grid[j + 1][i - 1] != '.' && !grid[j + 1][i - 1].is_ascii_digit() {
-                        run.make_valid();
-                        if grid[j + 1][i - 1] == '*' {
-                            run.set_gear_position(j + 1, i - 1);
-                        }
-                    }
-                }
+                });
                 if i == grid.iter().nth(0).unwrap().len() - 1 {
                     runs.push(run);
                 }
@@ -163,11 +98,8 @@ pub fn process(input: &str) -> String {
     x.to_string()
 }
 
-fn check_stuff(grid: &Vec<Vec<char>>, y: i32, x: i32) -> bool {
-    if x < 0 || y < 0 || x >= grid.iter().nth(0).unwrap().len() as i32 || y >= grid.len() as i32 {
-        return false;
-    }
-    true
+fn is_valid_neighbour_coordinate(grid: &Vec<Vec<char>>, y: i32, x: i32) -> bool {
+    !(x < 0 || y < 0 || x >= grid.iter().nth(0).unwrap().len() as i32 || y >= grid.len() as i32)
 }
 
 #[cfg(test)]

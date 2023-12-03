@@ -17,7 +17,7 @@ pub fn get_input(part: u8) -> String {
             Err(err) => {
                 dbg!(err);
                 "".to_string()
-            },
+            }
         },
     }
 }
@@ -44,4 +44,3 @@ fn parse_remote(day: u8, part: u8) -> Result<String, Box<dyn Error>> {
     std::fs::write(format!("input/final/input-{part}.txt"), &resp)?;
     Ok(resp)
 }
-

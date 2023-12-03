@@ -39,7 +39,16 @@ pub fn process(input: &str) -> String {
     let mut runs: Vec<Run> = vec![];
     let mut grid: Vec<Vec<char>> = vec![];
     let height = input.lines().count();
-
+    let directions = [
+        (-1, 0),
+        (0, -1),
+        (1, 0),
+        (0, 1),
+        (1, 1),
+        (1, -1),
+        (-1, 1),
+        (-1, -1),
+    ];
     for i in 0..height {
         let line: Vec<char> = input.lines().nth(i).unwrap().chars().collect();
         grid.push(line);
@@ -48,60 +57,18 @@ pub fn process(input: &str) -> String {
         let mut run = Run::new();
         line.iter().enumerate().for_each(|(i, c)| {
             if c.is_ascii_digit() {
-                // dbg!(c);
                 run.move_forward(*c);
-                // dbg!(run);
-                //west
-                if check_stuff(&grid, j as i32, i as i32 - 1) {
-                    if grid[j][i - 1] != '.' && !grid[j][i - 1].is_ascii_digit() {
-                        run.make_valid();
+                directions.iter().for_each(|(dy, dx)| {
+                    let x = i as i32 + dx;
+                    let y = j as i32 + dy;
+                    if is_valid_neighbour_coordinate(&grid, y, x) {
+                        let x = x as usize;
+                        let y = y as usize;
+                        if grid[y][x] != '.' && !grid[y][x].is_ascii_digit() {
+                            run.make_valid();
+                        }
                     }
-                }
-                //east
-                if check_stuff(&grid, j as i32, i as i32 + 1) {
-                    if grid[j][i + 1] != '.' && !grid[j][i + 1].is_ascii_digit() {
-                        run.make_valid();
-                    }
-                }
-                //north
-                if check_stuff(&grid, j as i32 - 1, i as i32) {
-                    // dbg!(grid[j-1][i]);
-                    if grid[j - 1][i] != '.' && !grid[j - 1][i].is_ascii_digit() {
-                        run.make_valid();
-                    }
-                }
-                //south
-                if check_stuff(&grid, j as i32 + 1, i as i32) {
-                    // dbg!(grid[j+1][i]);
-                    if grid[j + 1][i] != '.' && !grid[j + 1][i].is_ascii_digit() {
-                        run.make_valid();
-                    }
-                }
-                // south-west
-                if check_stuff(&grid, j as i32 + 1, i as i32 + 1) {
-                    if grid[j + 1][i + 1] != '.' && !grid[j + 1][i + 1].is_ascii_digit() {
-                        run.make_valid();
-                    }
-                }
-                // north-east
-                if check_stuff(&grid, j as i32 - 1, i as i32 - 1) {
-                    if grid[j - 1][i - 1] != '.' && !grid[j - 1][i - 1].is_ascii_digit() {
-                        run.make_valid();
-                    }
-                }
-
-                // north-west
-                if check_stuff(&grid, j as i32 - 1, i as i32 + 1) {
-                    if grid[j - 1][i + 1] != '.' && !grid[j - 1][i + 1].is_ascii_digit() {
-                        run.make_valid();
-                    }
-                }
-                // south-east
-                if check_stuff(&grid, j as i32 + 1, i as i32 - 1) {
-                    if grid[j + 1][i - 1] != '.' && !grid[j + 1][i - 1].is_ascii_digit() {
-                        run.make_valid();
-                    }
-                }
+                });
                 if i == grid.iter().nth(0).unwrap().len() - 1 {
                     runs.push(run);
                 }
@@ -112,23 +79,15 @@ pub fn process(input: &str) -> String {
         })
     });
 
-    let ans = runs.iter().fold(0, |mut acc, run| {
-        if run.is_valid {
-            acc += run.number;
-        } else {
-            acc += 0;
-        }
-        acc
-    });
-
-    ans.to_string()
+    runs.iter()
+        .filter(|r| r.is_valid)
+        .map(|run| run.number)
+        .sum::<u32>()
+        .to_string()
 }
 
-fn check_stuff(grid: &Vec<Vec<char>>, y: i32, x: i32) -> bool {
-    if x < 0 || y < 0 || x >= grid.iter().nth(0).unwrap().len() as i32 || y >= grid.len() as i32 {
-        return false;
-    }
-    true
+fn is_valid_neighbour_coordinate(grid: &Vec<Vec<char>>, y: i32, x: i32) -> bool {
+    !(x < 0 || y < 0 || x >= grid.iter().nth(0).unwrap().len() as i32 || y >= grid.len() as i32)
 }
 
 #[cfg(test)]
