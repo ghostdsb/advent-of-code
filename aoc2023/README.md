@@ -12,8 +12,8 @@ For fetching input, this first checks if its locally available.
 ## Prerequisites
   - `.env` file with; 
         
-        SESSION=your-session-string-from-advent-of-code
-        YEAR=2023
+        SESSION=session_string_from_advent_of_code
+        YEAR=YYYY
   - > cargo install cargo-generate
 ## Commands
 
