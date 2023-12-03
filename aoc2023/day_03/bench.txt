@@ -1,4 +1,0 @@
-example   fastest       │ slowest       │ median        │ mean          │ samples │ iters
-├─ part1  284.7 µs      │ 407.3 µs      │ 296.1 µs      │ 301.4 µs      │ 100     │ 100
-╰─ part2  363.3 µs      │ 583.3 µs      │ 376 µs        │ 384.9 µs      │ 100     │ 100
-
