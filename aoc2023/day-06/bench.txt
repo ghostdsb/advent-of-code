@@ -1,0 +1,12 @@
+bench     fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  285 ns        │ 344.8 ns      │ 289.7 ns      │ 291.3 ns      │ 100     │ 25600
+╰─ part2  198.3 ns      │ 245.5 ns      │ 201 ns        │ 202.2 ns      │ 100     │ 25600
+
+bench     fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  641.5 ns      │ 1.327 µs      │ 810.7 ns      │ 793 ns        │ 100     │ 12800
+╰─ part2  479.5 ns      │ 781.2 ns      │ 493.4 ns      │ 545.4 ns      │ 100     │ 12800
+
+bench     fastest       │ slowest       │ median        │ mean          │ samples │ iters
+├─ part1  283.8 ns      │ 369.3 ns      │ 286.9 ns      │ 291.2 ns      │ 100     │ 51200
+╰─ part2  209.9 ns      │ 237.7 ns      │ 212.7 ns      │ 214.9 ns      │ 100     │ 51200
+
