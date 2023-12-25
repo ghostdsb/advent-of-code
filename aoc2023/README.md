@@ -21,5 +21,5 @@ For fetching input, this first checks if its locally available.
 - For starting project for a new day
   > make solution day=N, where N ∈ [01, 25] 
 
-- FOr benchmarking
+- For benchmarking
   > make bench day=N, where N ∈ [01, 25]
