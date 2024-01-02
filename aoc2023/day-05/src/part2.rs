@@ -1,8 +1,98 @@
-use std::collections::HashMap;
+use std::{collections::VecDeque, ops::Range};
+
+#[derive(Debug)]
+struct Almanac {
+    seeds: Vec<(u64, u64)>,
+    maps: Vec<AlmanacMap>,
+}
+
+impl Almanac {
+    fn get_mapped_seeds(&self, seed_ranges: Vec<Range<u64>>) -> u64 {
+        let mapped = self.maps.iter().fold(seed_ranges, |acc, m| m.process(acc));
+        mapped.iter().map(|x| x.start).min().unwrap()
+    }
+}
+
+#[derive(Clone, Copy, Debug)]
+struct AlmanacRange {
+    destination_start: u64,
+    source_start: u64,
+    length: u64,
+}
+
+impl AlmanacRange {
+    fn new(destination_start: u64, source_start: u64, length: u64) -> Self {
+        Self {
+            destination_start,
+            source_start,
+            length,
+        }
+    }
+
+    fn get_overlap(&self, r: &Range<u64>) -> Option<Range<u64>> {
+        let overlap_start = r.start.max(self.source_start);
+        let overlap_end = r.end.min(self.source_start + self.length);
+
+        let overlap = overlap_start..overlap_end;
+        (!overlap.is_empty()).then_some(overlap)
+    }
+
+    fn create_mapped_range(&self, overlap: Range<u64>) -> Range<u64> {
+        let start_offset = overlap.start - self.source_start;
+        let end_offset = overlap.end - self.source_start;
+
+        let new_start = self.destination_start + start_offset;
+        let new_end = self.destination_start + end_offset;
+
+        new_start..new_end
+    }
+}
+
+#[derive(Clone, Debug)]
+struct AlmanacMap {
+    ranges: Vec<AlmanacRange>,
+}
+
+impl AlmanacMap {
+    fn new(ranges: &Vec<AlmanacRange>) -> Self {
+        Self {
+            ranges: ranges.to_vec(),
+        }
+    }
+
+    fn process(&self, seeds: Vec<Range<u64>>) -> Vec<Range<u64>> {
+        let mut new_seeds = vec![];
+        let mut seed_queue = VecDeque::from(seeds);
+        while let Some(range) = seed_queue.pop_front() {
+            let mapped: Vec<Range<u64>> = self
+                .ranges
+                .iter()
+                .filter_map(|almanac_range| {
+                    almanac_range.get_overlap(&range).map(|overlap| {
+                        if overlap.start > range.start {
+                            seed_queue.push_back(range.start..overlap.start)
+                        }
+                        if overlap.end < range.end {
+                            seed_queue.push_back(overlap.end..range.end)
+                        }
+                        almanac_range.create_mapped_range(overlap)
+                    })
+                })
+                .collect();
+
+            if mapped.is_empty() {
+                new_seeds.push(range);
+            } else {
+                new_seeds.extend(mapped);
+            }
+        }
+        new_seeds
+    }
+}
 
 pub fn process(input: &str) -> String {
-    let mut mappings: HashMap<String, HashMap<(u64, u64), u64>> = HashMap::new();
-    let mut current_map = "";
+    let mut range_vec: Vec<AlmanacRange> = vec![];
+    let mut range_mapping_vec: Vec<AlmanacMap> = vec![];
     let mut seeds: Vec<(u64, u64)> = Vec::new();
     let _ = input.lines().filter(|l| !l.is_empty()).for_each(|l| {
         if l.contains(":") {
@@ -12,111 +102,42 @@ pub fn process(input: &str) -> String {
                     .split_whitespace()
                     .filter(|c| *c != ":")
                     .map(|c| {
-                        dbg!(c);
                         c.parse::<u64>().unwrap()
                     })
                     .collect::<Vec<u64>>()
                     .chunks(2)
-                    .for_each(|seed_info|{
-                        seeds.push((seed_info[0], seed_info[0] +seed_info[1] - 1));
+                    .for_each(|seed_info| {
+                        seeds.push((seed_info[0], seed_info[0] + seed_info[1]));
                     });
             } else {
-                let (map_type, _) = command.split_at(command.find(" ").unwrap());
-                current_map = map_type;
+                if range_vec.len() > 0 {
+                    let a: AlmanacMap = AlmanacMap::new(&range_vec);
+                    range_mapping_vec.push(a);
+                    range_vec = vec![];
+                }
             }
-            // dbg!(command, options, &seed, current_map);
         } else {
             let data: Vec<u64> = l
                 .split_whitespace()
                 .map(|c| c.parse::<u64>().unwrap())
                 .collect();
-            mappings
-                .entry(current_map.to_string())
-                .and_modify(|hm| {
-                    hm.insert((data[0], data[1]), data[2]);
-                })
-                .or_insert(HashMap::from([((data[0], data[1]), data[2])]));
+            let almanac_range = AlmanacRange::new(data[0], data[1], data[2]);
+            range_vec.push(almanac_range);
         }
     });
-    // let maps = [
-    //     "seed-to-soil",
-    //     "soil-to-fertilizer",
-    //     "fertilizer-to-water",
-    //     "water-to-light",
-    //     "light-to-temperature",
-    //     "temperature-to-humidity",
-    //     "humidity-to-location",
-    //     ];
+    let data = Almanac {
+        maps: range_mapping_vec,
+        seeds,
+    };
 
-    // dbg!(mappings);
+    let ranges = data
+        .seeds
+        .iter()
+        .map(|(start, end)| *start..*end)
+        .collect::<Vec<Range<u64>>>();
 
-    // let mut min_location = u64::MAX;
-
-    // for seed in seeds.iter() {
-    //     let soil = a_to_b(&mappings.get("seed-to-soil").unwrap(), *seed);
-    //     let fertilizer = a_to_b(&mappings.get("soil-to-fertilizer").unwrap(), soil);
-    //     let water = a_to_b(&mappings.get("fertilizer-to-water").unwrap(), fertilizer);
-    //     let light = a_to_b(&&mappings.get("water-to-light").unwrap(), water);
-    //     let temperature = a_to_b(&&mappings.get("light-to-temperature").unwrap(), light);
-    //     let humidity = a_to_b(
-    //         &&mappings.get("temperature-to-humidity").unwrap(),
-    //         temperature,
-    //     );
-    //     let location = a_to_b(&&mappings.get("humidity-to-location").unwrap(), humidity);
-    //     min_location = min_location.min(location);
-    // }
-    dbg!(seeds);
-    "1".to_string()
-}
-
-fn a_to_b(map: &HashMap<(u64, u64), u64>, seed: u64) -> u64 {
-    let mut val: Option<u64> = None;
-    map.into_iter().for_each(|((b_start, a_start), jump)| {
-        if seed >= *a_start && seed < a_start + jump {
-            val = Some(seed - a_start + b_start);
-        }
-    });
-    match val {
-        Some(v) => v,
-        None => seed,
-    }
-}
-
-fn a_to_c(map: &HashMap<(u64, u64), u64>, seed_range: Vec<(u64, u64)>) -> u64 {
-    // let mut val: Option<u64> = None;
-    let mut v: Vec<(u64, u64)> = seed_range;
-    map.into_iter().for_each(|((c_start, a_start), jump)| {
-        let map_range = (*a_start, *a_start + jump - 1);
-        let delta: i64 = *c_start as i64 - *a_start as i64;
-        // v = ranger(map_range, v, delta);
-        let mut x: Vec<(u64, u64)> = vec![];
-        for (seed_l, seed_r) in v.iter(){
-            x = ranger(map_range, (*seed_l, *seed_r), delta);
-        }
-        // x.iter().for_each(|m| )
-
-    });
-    0
-    // match val {
-    //     Some(v) => v,
-    //     None => seed,
-    // }
-}
-
-fn ranger(map_range: (u64, u64), seed_range: (u64, u64), delta: i64) -> Vec<(u64, u64)>{
-    if seed_range.1 < map_range.0 {
-        vec![seed_range]
-    }else if seed_range.0 < map_range.0 && seed_range.1 >= map_range.0 && seed_range.1 <= map_range.1 {
-        vec![(seed_range.0, map_range.0-1), ((map_range.0 as i64 + delta) as u64, (seed_range.1 as i64 + delta) as u64)]
-    } else if seed_range.0 >= map_range.0 && seed_range.1 <= map_range.1{
-        vec![((seed_range.0 as i64 + delta) as u64, (seed_range.1 as i64 + delta) as u64)]
-    } else if seed_range.0 >= map_range.0 && seed_range.0 <= map_range.1 && seed_range.1 > map_range.1 {
-        vec![((seed_range.0 as i64 + delta) as u64, (map_range.1 as i64 + delta) as u64), (map_range.1 + 1, seed_range.1)]
-    } else if seed_range.0 > map_range.1{
-        vec![seed_range]
-    } else{
-        vec![(seed_range.0, map_range.0-1), ((map_range.0 as i64 + delta) as u64, (map_range.1 as i64 + delta) as u64), (map_range.1+1, seed_range.1)]
-    }
+    let ans = data.get_mapped_seeds(ranges);
+    ans.to_string()
 }
 
 #[cfg(test)]
@@ -125,18 +146,8 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let input = include_str!("../input/test/input-1.txt");
+        let input = include_str!("../input/test/input-2.txt");
         let output = process(input);
         assert_eq!(output, "46");
-    }
-
-    #[test]
-    fn convertions() {
-        let mut hm: HashMap<(u64, u64), u64> = HashMap::new();
-        hm.insert((50, 98), 2);
-        hm.insert((52, 50), 48);
-        assert_eq!(a_to_b(&hm, 98), 50);
-        assert_eq!(a_to_b(&hm, 50), 52);
-        assert_eq!(a_to_b(&hm, 79), 81);
     }
 }
