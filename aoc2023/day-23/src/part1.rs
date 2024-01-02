@@ -9,11 +9,11 @@ pub fn process(input: &str) -> String {
     let ending_position = grid[grid.len()-1].iter().position(|&c| c == '.').take().map(|x|(grid.len()-1,x)).unwrap();
     let dirs = vec![(0,-1), (0,1), (-1,0), (1, 0)];
     dbg!(starting_position, ending_position);
-    dfs(&grid, starting_position, ending_position, dirs);
-    "input".to_string()
+    let ans = dfs(&grid, starting_position, ending_position, dirs);
+    ans.to_string()
 }
 
-fn dfs(grid: &Vec<Vec<char>>, starting_position: (usize, usize), ending_position: (usize, usize), dirs: Vec<(i32, i32)>) {
+fn dfs(grid: &Vec<Vec<char>>, starting_position: (usize, usize), ending_position: (usize, usize), dirs: Vec<(i32, i32)>) -> u64 {
     let mut stack: Vec<(usize, (usize, usize))> = vec![(0, starting_position)];
     let mut visited: BTreeSet<(usize, usize)> = BTreeSet::new();
     let mut path: Vec<(usize, usize)> = vec![];
@@ -75,6 +75,7 @@ fn dfs(grid: &Vec<Vec<char>>, starting_position: (usize, usize), ending_position
         }
     }
     println!("max: {}",max_paths);
+    (max_paths - 1).try_into().unwrap()
     // print_grid(grid, pathx);
 }
 
@@ -103,6 +104,6 @@ mod tests {
     fn it_works() {
         let input = include_str!("../input/test/input-1.txt");
         let output = process(input);
-        assert_eq!(output, "");
+        assert_eq!(output, "94");
     }
 }

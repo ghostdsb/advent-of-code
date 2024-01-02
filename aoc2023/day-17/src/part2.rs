@@ -41,7 +41,7 @@ pub fn process(input: &str) -> String {
     let grid = input.split('\n').map(str::as_bytes).collect::<Vec<_>>();
     let x = dijkstra(&grid, 4, 10);
     dbg!(x);
-    "x".to_string()
+    x.to_string()
 }
 
 #[cfg(test)]
@@ -52,6 +52,6 @@ mod tests {
     fn it_works() {
         let input = include_str!("../input/test/input-1.txt");
         let output = process(input);
-        assert_eq!(output, "");
+        assert_eq!(output, "94");
     }
 }
