@@ -57,3 +57,13 @@ func TopologicalSort(graph map[int][]int) []int {
 	}
 	return topOrder
 }
+
+func PrintGrid(grid [][]rune) {
+	for _, line := range grid {
+		for _, sq := range line {
+			fmt.Printf("%c", sq)
+		}
+		fmt.Println()
+	}
+	fmt.Println()
+}
