@@ -5,6 +5,7 @@ import (
 	"aoc2024/utils"
 	"fmt"
 	"os"
+	"time"
 )
 
 func main() {
@@ -28,6 +29,8 @@ func main() {
 		return
 	}
 
+	timeStart := time.Now()
+
 	switch day {
 	case "1":
 		fmt.Println("Day 1 Solution:", solutions.SolutionDay01part1(input), solutions.SolutionDay01part2(input))
@@ -49,7 +52,16 @@ func main() {
 		fmt.Println("Day 9 Solution:", solutions.SolutionDay09part1(input), solutions.SolutionDay09part2(input))
 	case "10":
 		fmt.Println("Day 10 Solution:", solutions.SolutionDay10part1(input), solutions.SolutionDay10part2(input))
+	case "11":
+		fmt.Println("Day 11 Solution:", solutions.SolutionDay11part1(input), solutions.SolutionDay11part2(input))
+	case "12":
+		fmt.Println("Day 12 Solution:", solutions.SolutionDay12part1(input), solutions.SolutionDay12part2(input))
+	case "13":
+		fmt.Println("Day 13 Solution:", solutions.SolutionDay13part1(input), solutions.SolutionDay13part2(input))
+	case "14":
+		fmt.Println("Day 14 Solution:", solutions.SolutionDay14part1(input), solutions.SolutionDay14part2(input))
 	default:
 		fmt.Printf("Solution for Day %s not implemented.\n", day)
 	}
+	fmt.Printf("Time: %.2fms\n", float64(time.Since(timeStart).Microseconds())/1000)
 }
