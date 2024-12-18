@@ -62,6 +62,12 @@ func main() {
 		fmt.Println("Day 14 Solution:", solutions.SolutionDay14part1(input), solutions.SolutionDay14part2(input))
 	case "15":
 		fmt.Println("Day 15 Solution:", solutions.SolutionDay15(input))
+	case "16":
+		fmt.Println("Day 16 Solution:", solutions.SolutionDay16(input))
+	case "17":
+		fmt.Println("Day 17 Solution:", solutions.SolutionDay17(input))
+	case "18":
+		fmt.Println("Day 18 Solution:", solutions.SolutionDay18(input))
 	default:
 		fmt.Printf("Solution for Day %s not implemented.\n", day)
 	}

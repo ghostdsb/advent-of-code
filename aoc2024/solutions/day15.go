@@ -47,13 +47,13 @@ func SolutionDay15(input []string) string {
 		w[i] = make([]Entity, len(warehouse[i]))
 		copy(w[i], warehouse[i])
 	}
-	part1 := Part1(w, directions, startX, startY)
-	part2 := Part2(warehouse, directions, startX, startY)
+	part1 := d15p1(w, directions, startX, startY)
+	part2 := d15p2(warehouse, directions, startX, startY)
 
 	return fmt.Sprintf("%s %s", part1, part2)
 }
 
-func Part1(warehouse [][]Entity, directions []byte, x, y int) string {
+func d15p1(warehouse [][]Entity, directions []byte, x, y int) string {
 	ans := 0
 	// visualiseWarehouse(warehouse)
 	for _, dir := range directions {
@@ -81,7 +81,7 @@ func Part1(warehouse [][]Entity, directions []byte, x, y int) string {
 	return strconv.FormatInt(int64(ans), 10)
 }
 
-func Part2(warehouse [][]Entity, directions []byte, x, y int) string {
+func d15p2(warehouse [][]Entity, directions []byte, x, y int) string {
 	ans := 0
 	bigWarehouse := make([][]Entity, 0)
 	for r, line := range warehouse {
